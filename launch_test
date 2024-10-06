@@ -1,0 +1,49 @@
+INSTDIR=/home/alena/postgrespro/my/inst/bin
+PGDATA2=/home/alena/postgres_data11
+
+$INSTDIR/psql -d postgres -c "create role postgres with superuser"
+$INSTDIR/psql -d postgres -c "alter role postgres with login"
+
+$INSTDIR/psql -d postgres -c "CREATE TABLE testtab (
+   id        bigint,
+   unchanged integer,
+   changed   integer
+)"
+
+$INSTDIR/psql -d postgres -c "INSERT INTO testtab
+   SELECT i, i, 0
+   FROM generate_series(1, 10000) AS i"
+
+$INSTDIR/psql -d postgres -c "CREATE INDEX testtab_unchanged_idx ON testtab (unchanged)"
+$INSTDIR/psql -d postgres -c "CREATE INDEX testtab_changed_idx ON testtab (changed)"
+
+$INSTDIR/psql -d postgres -c "create extension dblink;
+create extension pg_profile;
+create extension pg_stat_statements"
+
+$INSTDIR/psql -d postgres -c "select set_server_connstr('local','dbname=postgres port=5432 user=postgres')"
+
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile3/workfile3_1.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile3/workfile3_2.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile3/workfile3_3.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile3/workfile3_4.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile3/workfile3_5.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile3/workfile3_6.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile3/workfile3_7.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile3/workfile3_8.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile4/workfile4_1.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile4/workfile4_2.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile4/workfile4_3.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile4/workfile4_4.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile4/workfile4_5.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile4/workfile4_6.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile4/workfile4_7.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile4/workfile4_8.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile7/workfile7_1.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile7/workfile7_2.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile7/workfile7_3.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile7/workfile7_4.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile7/workfile7_5.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile7/workfile7_6.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile7/workfile7_7.sql &
+$INSTDIR/psql -d postgres -f /home/alena/vacuum_test_repo/workfile7/workfile7_8.sql
